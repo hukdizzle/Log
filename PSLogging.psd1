@@ -27,7 +27,7 @@ Author = 'Curtis Jones'
 CompanyName = 'N/A'
 
 # Copyright statement for this module
-Copyright = '(C) 2017 BitTitan.  All rights reserved.'
+Copyright = '(C) Curtis Jones and all contributors/authors'
 
 # Description of the functionality provided by this module
 Description = 'A logging module for PowerShell'
@@ -69,7 +69,7 @@ Description = 'A logging module for PowerShell'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @()
+FunctionsToExport = @('Add-Log','Set-LogFile')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -101,10 +101,10 @@ PrivateData = @{
         # LicenseUri = ''
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://www.bittitan.com/'
+        ProjectUri = 'https://github.com/hukdizzle/PSLogging'
 
         # A URL to an icon representing this module.
-        IconUri = 'https://www.bittitan.com/media/1065/bt-logo.png'
+        # IconUri = ''
 
         # ReleaseNotes of this module
         # ReleaseNotes = ''
