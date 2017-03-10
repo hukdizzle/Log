@@ -25,11 +25,12 @@
         }
         
         [string]$global:logFile = $logPath + '\' + [IO.Path]::GetFileNameWithoutExtension($logFileName) + ".log"
+        $global:logThreshold = $LogFileSizeThreshold
 
         try
         {
             $log = Get-Item $logFile -ErrorAction Stop
-            if ( ($log.Length / $logFileSizeThreshold) -ge '1')
+            if ( ($log.Length / $logFileSizeThreshold) -ge '1' )
             {
                 Rename-Item -Path $log.FullName -NewName "$($log.BaseName)_$(Get-Date -Format ddMMyyThhmmss).old"
                 Log -Message "Log file $($log.Name) is at $($log.length) Bytes size which is larger than the allowed size threshold of $($logFileSizeThreshold) Bytes, prior log file has been renamed to $($log.BaseName)_$(Get-Date -Format ddMMyyThhmmss).log." -Type Warning

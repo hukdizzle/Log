@@ -14,6 +14,11 @@
     )
     process
     {
+        if(-not $logFile)
+        {
+            Set-LogFile -LogFileName $MyInvocation.ScriptName -LogFileSizeThreshold 1GB
+        }
+        
         "[$(Get-Date -format 'G') | $($pid) | $($env:username) | $($Type.ToUpper())] $Message" | Out-File -FilePath $Logfile -Append
 
         if($Out)
@@ -26,6 +31,11 @@
                 Debug { Write-Debug -Message $Message -Debug }
                 Verbose { Write-Verbose -Message $Message -Verbose }
             }
+        }
+
+        if(((Get-Item $logFile).Length / $logThreshold) -ge '1')
+        {
+            Set-LogFile -LogFileName ([IO.Path]::GetFileNameWithoutExtension($logFile)) -LogFileSizeThreshold $logThreshold
         }
     }
 }

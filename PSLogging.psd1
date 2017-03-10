@@ -27,13 +27,13 @@ Author = 'Curtis Jones'
 CompanyName = 'N/A'
 
 # Copyright statement for this module
-Copyright = '(C) Curtis Jones and all contributors/authors'
+Copyright = '(C) 2017 Curtis Jones and all contributors/authors. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'A logging module for PowerShell'
 
 # Minimum version of the Windows PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '3.0'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
