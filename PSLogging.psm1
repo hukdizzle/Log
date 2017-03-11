@@ -6,10 +6,3 @@ $moduleRoot = Split-Path $MyInvocation.MyCommand.Path
 	ForEach-Object {
 		. $_.ProviderPath
 	}
-
-# Importing all private helper functions (that are not exposed to the user through the module)
-"$moduleRoot\Private\*.ps1" |
-	Resolve-Path |
-	ForEach-Object {
-		. $_.ProviderPath
-	}
