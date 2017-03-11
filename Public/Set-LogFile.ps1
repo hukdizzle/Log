@@ -41,9 +41,9 @@
     }
     process
     {
-        #A logPath string variable is set utilizing an IO.Path method to combine the local AppData, PowerShellLogging, and the logFileName param after it's been sanitized of any extensions that may have been erroneously input to the function.
-        
-        $logPath = ([IO.Path]::Combine($env:LOCALAPPDATA,'PowerShellLogging',[IO.Path]::GetFileNameWithoutExtension($logFileName)))
+        #A logPath string variable is set utilizing an IO.Path method to combine the local AppData, PowerShellLogging, and the logFileName param after it's been sanitized of any extensions or invalid characters that may have been erroneously input to the function.
+
+        $logPath = ([IO.Path]::Combine($env:LOCALAPPDATA,'PowerShellLogging',[IO.Path]::GetFileNameWithoutExtension((([char[]]$LogFileName | Where-Object { [IO.Path]::GetInvalidFileNameChars() -notcontains $_ }) -join ''))))
         
         #If the logPath location does not exist the following block will be entered and the directory will be created. If creation fails a terminating error will be thrown.
         
