@@ -6,7 +6,7 @@
 	    Author:			Curtis Jones
 	    Date:			March 10th, 2017
 	    Version:		1.0.0
-	    Requirements:		Powershell 5.0
+	    Requirements:		Powershell 3.0
 	
     .SYNOPSIS
         Provides code execution string logging into $env:LOCALAPPDATA\PowerShellLogging along with the ability to output to all valid PowerShell streams simultaneously.
@@ -21,6 +21,9 @@
     .PARAMETER Out
 
         Used to output the log message to the corresponding message stream and also output to console.
+    .PARAMETER LogFileSizeThreshold
+
+        Provide a valid size for a log file threshold such as 1GB, 500MB, 1024KB, etc.
     .EXAMPLE
         Add-Log -Message "The reactor core has reached critical mass" -Type Warning -Out
 
@@ -36,19 +39,25 @@
         [ValidateSet("Normal","Error","Warning","Debug","Verbose")]
         [string]$Type,
         [parameter(Mandatory=$false,Position=2,HelpMessage="Use switch to output the log message to the corresponding stream and also output it to the console.")]
-        [switch]$Out
+        [switch]$Out,
+        [parameter(Mandatory=$false,Position=3,HelpMessage="Provide a valid size for a log file threshold such as 1GB, 500MB, 1024KB, etc. The default parameter value is 100MB.")]
+        [int]$LogFileSizeThreshold=3KB
     )
-    begin
-    {
-    }
     process
     {
         
         #If no logFile variable is present in the current PSSession the Set-LogFile function will be called to generate a logFile variable pointing to a new or existing log file based on the name of the invocation script.
-        
-        if(-not $logFile)
+
+        if((-not $logFile) -or ([IO.Path]::GetFileNameWithoutExtension($logFile) -ne [IO.Path]::GetFileNameWithoutExtension($MyInvocation.PSCommandPath)))
         {
-            Set-LogFile -LogFileName $MyInvocation.ScriptName -LogFileSizeThreshold 1GB
+            try
+            {
+                $script:logFile = Set-LogFile -LogFileName $MyInvocation.PSCommandPath -ShowLocation -ErrorAction Stop
+            }
+            catch
+            {
+                throw
+            }
         }
         
         #A string is constructed including the datetime, current PowerShell process ID, executing windows username, log type param, and message string param. The full string is output to the logFile variable with the append switch utilized as to not overwrite any existing entries.
@@ -69,14 +78,20 @@
             }
         }
 
-        #If the logFile size divided by the logThreshold variable set by the Set-LogFile function is greater than equal to one the following block will be entered to call the Set-LogFile function. The Set-LogFile function operates under the same evaluation and will generate a new log file for future logging while renaming the old log file.
+        $log = Get-Item $logFile
 
-        if(((Get-Item $logFile).Length / $logThreshold) -ge '1')
+        if(($log.Length / $logFileSizeThreshold) -ge '1')
         {
-            Set-LogFile -LogFileName ([IO.Path]::GetFileNameWithoutExtension($logFile)) -LogFileSizeThreshold $logThreshold
+            try
+            {
+                Rename-Item -Path $log.FullName -NewName "$($log.BaseName)_$(Get-Date -Format ddMMyyThhmmss).old" -ErrorAction Stop
+                $script:logFile = Set-LogFile -LogFileName $MyInvocation.PSCommandPath -ErrorAction Stop
+                "Log file $($log.Name) was found to be at $($log.length) Bytes size which is larger than the allowed size threshold of $($logFileSizeThreshold) Bytes, prior log file has been renamed to $($log.BaseName)_$(Get-Date -Format ddMMyyThhmmss).old." | Out-File -FilePath $logFile -Append
+            }
+            catch
+            {
+                throw
+            }
         }
-    }
-    end
-    {
     }
 }
