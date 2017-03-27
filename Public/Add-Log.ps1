@@ -5,7 +5,7 @@
 	    Title:			Add-Log.ps1
 	    Author:			Curtis Jones
 	    Date:			March 24th, 2017
-	    Version:		1.0.0
+	    Version:		1.0.1
 	    Requirements:		Powershell 3.0
 	
     .SYNOPSIS
