@@ -27,7 +27,7 @@ Author = 'Curtis Jones'
 CompanyName = 'N/A'
 
 # Copyright statement for this module
-Copyright = '(C) 2017 Curtis Jones and all contributors/authors. All rights reserved.'
+Copyright = '(C) 2017 Curtis Jones and all contributors/authors.'
 
 # Description of the functionality provided by this module
 Description = 'A logging module for PowerShell'
@@ -95,10 +95,10 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('Log','Logging')
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/hukdizzle/Log/blob/master/LICENSE.txt'
 
         # A URL to the main website for this project.
         ProjectUri = 'https://github.com/hukdizzle/Log'
