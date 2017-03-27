@@ -36,7 +36,7 @@
         [parameter(Mandatory=$true,Position=0,HelpMessage="The message that will be logged and also output to PowerShell stream if the Out switch is used.")]
         [string]$Message,
         [parameter(Mandatory=$true,Position=1,HelpMessage="Used to indicate the type of log message and also used to correlate the type of stream to be utilized if the Out switch is used.")]
-        [ValidateSet("Normal","Error","Warning","Debug","Verbose")]
+        [ValidateSet("Normal","Error","Warning","Debug","Verbose","Information")]
         [string]$Type,
         [parameter(Mandatory=$false,Position=2,HelpMessage="Use switch to output the log message to the corresponding stream and also output it to the console.")]
         [switch]$Out,
@@ -79,6 +79,13 @@
                     Warning { Write-Warning -Message $message }
                     Debug { Write-Debug -Message $message -Debug }
                     Verbose { Write-Verbose -Message $message -Verbose }
+                    Information { 
+                                    if(($PSVersionTable.PSVersion.Major) -ge 5) 
+                                    {
+                                        Write-Information -MessageData $message -InformationAction Continue
+                                    }
+                                }
+
                 }
             }
 

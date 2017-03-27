@@ -29,6 +29,12 @@ As you can see there is some additional helpful information automatically inject
 * **Automatic Log File Size Maintenance**
   * Each time the Log function is called it evaluates the size of the current log file. If the log file grows larger than 100MB a new log file is created automatically and the old log file is renamed to LogFileName_DateTime.old. This ensures no loss of logging data and that the log files do not grow too large to be useful under heavy use.
 * **All Native PowerShell Output Streams Supported**
-  * The Type parameter of the Log function supports all native PowerShell output streams such as **Normal**, **Error**, **Warning**, **Debug**, and **Verbose**. To pass the message string to the corresponding output stream make sure to call the Out switch parameter along with the correct Type value.
+  * The Type parameter of the Log function supports all native PowerShell output streams such as **Normal**, **Error**, **Warning**, **Debug**, **Verbose** and **Information**. To pass the message string to the corresponding output stream make sure to call the Out switch parameter along with the correct Type value.
 * **Log File Location Notification**
   * If the Log function is being called for the first time in a PSSession and the current PSSession environment is in UserInterative mode the .NET MessageBox class Show method is used to advise the executing user of the log file location. The user must click with the mouse on the OK button for the script/function execution to proceed. This notification only happens once per PSSession. If the script/function is being executed in Non-UserInteractive mode such as a PowerShell scheduled job, the MessageBox Show method will NOT be called as it is not necessary.
+
+### License
+
+The Log PowerShell project is licensed under the [MIT License][].
+
+[MIT License]: LICENSE.txt
